@@ -1,0 +1,7 @@
+{
+    "packagesName": "dev.tkhm.tomato",
+    "apiPackage": "dev.tkhm.tomato.api",
+    "modelPackage": "dev.tkhm.tomato.model",
+    "invokerPackage": "dev.tkhm.tomato.invoker",
+    "interfaceOnly": true
+}
