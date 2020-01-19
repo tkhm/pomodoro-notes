@@ -18,8 +18,11 @@ dependencies {
     implementation 'io.quarkus:quarkus-hibernate-orm'
     implementation 'io.quarkus:quarkus-jdbc-postgresql'
 
-    // swagger
+    // openapiの自動生成コードが必要とするswagger
     implementation group: 'io.swagger', name: 'swagger-annotations', version: '1.6.0'
+
+    // ORMでMulti PKに対応するために使う
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
 
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'

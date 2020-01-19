@@ -1,9 +1,9 @@
-package dev.tkhm.tomato;
+package dev.tkhm.tomato.resource;
 
 import io.quarkus.test.junit.NativeImageTest;
 
 @NativeImageTest
-public class NativeExampleResourceIT extends ExampleResourceTest {
+public class NativeExampleResourceIT extends TasksResourceTest {
 
     // Execute the same tests but in native mode.
 }
