@@ -4,3 +4,9 @@ services:
     build: db/.
     ports:
       - "25432:5432"
+  webapi:
+    build:
+      context: ../webapi
+      dockerfile: src/main/docker/Dockerfile.multistage
+    ports:
+      - "28080:8080"
