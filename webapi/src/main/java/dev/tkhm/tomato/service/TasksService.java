@@ -22,7 +22,14 @@ public class TasksService {
         List<MiniTask> result = query.getResultList();
 
         List<Task> taskList = new ArrayList<>();
-        taskList.add(new Task().content(result.get(0).content));
+        result.forEach(each -> {
+            Task task = new Task();
+            task.id(each.id.toString())
+                    .content(each.content)
+                    .recordedAt(each.recordedAt.toString())
+                    .tags(each.tags);
+            taskList.add(task);
+        });
         return taskList;
     }
 }
