@@ -35,5 +35,6 @@ build/
 gen/
 src/main/openapi/openapi.yaml
 
-# このプロジェクトではPOMは使用しない
+# このプロジェクトではMavenは使用しない
 pom.xml
+target/
