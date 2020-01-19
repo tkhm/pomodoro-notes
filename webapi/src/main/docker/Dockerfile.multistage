@@ -1,0 +1,29 @@
+FROM gradle:6.0.1-jdk11 AS build
+WORKDIR /home/gradle/project
+
+# Gradle Containerはgraldeユーザーで動くためchown指定が必要
+COPY --chown=gradle:gradle src /home/gradle/project/src
+COPY --chown=gradle:gradle build.gradle /home/gradle/project
+COPY --chown=gradle:gradle gradle.properties /home/gradle/project
+COPY --chown=gradle:gradle settings.gradle /home/gradle/project
+RUN gradle quarkusBuild
+
+
+FROM fabric8/java-alpine-openjdk11-jre:1.6.5
+ENV JAVA_OPTIONS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
+ENV AB_ENABLED=jmx_exporter
+
+# Be prepared for running in OpenShift too
+RUN adduser -G root --no-create-home --disabled-password 1001 \
+  && chown -R 1001 /deployments \
+  && chmod -R "g+rwX" /deployments \
+  && chown -R 1001:root /deployments
+
+COPY --from=build /home/gradle/project/build/lib/* /deployments/lib/
+COPY --from=build /home/gradle/project/build/*-runner.jar /deployments/app.jar
+EXPOSE 8080
+
+# run with user 1001
+USER 1001
+
+ENTRYPOINT [ "/deployments/run-java.sh" ]
