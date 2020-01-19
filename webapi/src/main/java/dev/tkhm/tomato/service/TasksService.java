@@ -17,7 +17,7 @@ public class TasksService {
     @Inject
     EntityManager em;
 
-    public List<Task> getTasks() {
+    public List<Task> fetchTasks() {
         TypedQuery<MiniTask> query = em.createQuery("SELECT mt FROM MiniTask mt", MiniTask.class);
         List<MiniTask> result = query.getResultList();
 
@@ -25,5 +25,4 @@ public class TasksService {
         taskList.add(new Task().content(result.get(0).content));
         return taskList;
     }
-
 }
