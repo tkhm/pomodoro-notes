@@ -1,6 +1,5 @@
 package dev.tkhm.tomato.resource;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
