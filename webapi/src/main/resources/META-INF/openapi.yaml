@@ -6,6 +6,8 @@ info:
 servers:
   - url: http://localhost:8080/
     description: Optional dev mode server description
+  - url: http://localhost:28080/
+    description: Optional dev mode container server description
 
 paths:
   /tasks:
