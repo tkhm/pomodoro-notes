@@ -15,7 +15,7 @@ public class TasksResource implements TasksApi {
 
     @Override
     public List<Task> tasksGet() {
-        var taskList = service.getTasks();
+        var taskList = service.fetchTasks();
         return taskList;
     }
 
