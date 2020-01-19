@@ -1,4 +1,4 @@
-package dev.tkhm.tomato.entities;
+package dev.tkhm.tomato.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
