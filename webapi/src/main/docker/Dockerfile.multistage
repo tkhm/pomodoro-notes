@@ -1,13 +1,17 @@
-FROM gradle:6.0.1-jdk11 AS build
+FROM gradle:6.0.1-jdk11 AS cache
+RUN mkdir -p /home/gradle/cache_home
+ENV GRADLE_USER_HOME /home/gradle/cache_home
+COPY build.gradle /home/gradle/project/
+COPY gradle.properties /home/gradle/project
+COPY settings.gradle /home/gradle/project
 WORKDIR /home/gradle/project
+RUN gradle --no-daemon getDeps
 
-# Gradle Containerはgraldeユーザーで動くためchown指定が必要
-COPY --chown=gradle:gradle src /home/gradle/project/src
-COPY --chown=gradle:gradle build.gradle /home/gradle/project
-COPY --chown=gradle:gradle gradle.properties /home/gradle/project
-COPY --chown=gradle:gradle settings.gradle /home/gradle/project
-RUN gradle quarkusBuild
-
+FROM gradle:6.0.1-jdk11 AS build
+COPY --from=cache /home/gradle/cache_home /home/gradle/.gradle
+WORKDIR /home/gradle/project
+COPY . /home/gradle/project/
+RUN gradle --no-daemon quarkusBuild
 
 FROM fabric8/java-alpine-openjdk11-jre:1.6.5
 ENV JAVA_OPTIONS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"

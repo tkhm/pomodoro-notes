@@ -58,3 +58,9 @@ openApiGenerate {
 }
 
 sourceSets.main.java.srcDir "${rootDir}/src/gen/java"
+
+/* 依存関係を事前にダウンロード(for Docker build) */
+task getDeps(type: Exec) {
+    configurations.testRuntime.files
+    commandLine 'echo', 'Downloaded all dependencies'
+}

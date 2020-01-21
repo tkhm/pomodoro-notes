@@ -1,12 +1,26 @@
 version: "3"
 services:
   db:
-    build: db/.
+    environment:
+      - POSTGRES_DB=pomonotes
+    image: postgres:11.5-alpine
     ports:
       - "25432:5432"
+    volumes:
+      - "./volumes/postgresql/data:/var/lib/postgresql/data"
+
   webapi:
     build:
       context: ../webapi
       dockerfile: src/main/docker/Dockerfile.multistage
+    environment:
+      - QUARKUS_DATASOURCE_URL=jdbc:postgresql://db:5432/pomonotes
+      - QUARKUS_DATASOURCE_USERNAME=postgres
+      - QUARKUS_DATASOURCE_PASSWORD=postgres
+      - QUARKUS_DATASOURCE_DRIVER=org.postgresql.Driver
+    links:
+      - db
     ports:
       - "28080:8080"
+    restart: unless-stopped
+
