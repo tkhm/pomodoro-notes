@@ -112,7 +112,8 @@ components:
           type: array
         recordedAt:
           type: string
-          example: 2020-01-30 02:16:04.604938
+          pattern: "(19[0-9]{2}|20[0-9]{2})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])\\s(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([\\.][0-9]+)"
+          example: 2020-01-30 11:00:00.604938
 tags:
   - name: Task
     description: Pomodoro Daily Learning Task Related
