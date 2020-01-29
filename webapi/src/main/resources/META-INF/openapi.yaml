@@ -1,26 +1,44 @@
 openapi: 3.0.1
 info:
   title: Pomodoro Notes OpenAPI Resource Document
-  version: "1.0"
-
+  version: '1.0'
+  description: Record note and learning with pomodoro technique
+  contact:
+    name: tkhm
+    email: no-reply@mail.tkhm.dev
 servers:
-  - url: http://localhost:8080/
+  - url: 'http://localhost:8080'
     description: Optional dev mode server description
-  - url: http://localhost:28080/
+  - url: 'http://localhost:28080'
     description: Optional dev mode container server description
-
+  - url: 'http://localhost:3100'
+    description: Optional Stoplight mock server
 paths:
   /tasks:
     get:
       responses:
-        200:
-          description: OK - task list
+        '200':
           content:
             application/json:
               schema:
-                type: array
                 items:
                   $ref: '#/components/schemas/Task'
+                type: array
+              examples:
+                example-1:
+                  value:
+                    - id: 40e8256b-4dcc-41ad-b84f-a712d60748eb
+                      content: UUIDには4つのバージョンがある
+                      tags:
+                        - java
+                        - uuid
+                      recordedAt: '2020-01-22 21:06:27.604938'
+          description: OK - task list
+      x-accepts: application/json
+      description: Get all tasks with tags
+      operationId: tasksGet
+      tags:
+        - Task
     post:
       requestBody:
         content:
@@ -28,32 +46,75 @@ paths:
             schema:
               $ref: '#/components/schemas/Task'
       responses:
-        200:
-          description: new minitask resource created
+        '200':
           content:
             application/json: {}
+          description: new minitask resource created
+      x-contentType: application/json
+      x-accepts: application/json
+      description: Register a task with tags
+      tags:
+        - Task
+      operationId: tasksPost
   /tags:
     get:
       responses:
-        200:
-          description: OK - tag list
+        '200':
           content:
             application/json:
               schema:
-                type: array
                 items:
                   type: string
+                type: array
+              examples:
+                example-1:
+                  value:
+                    - java
+                    - uuid
+          description: OK - tag list
+      x-accepts: application/json
+      description: Get tags
+      tags:
+        - Task
+      operationId: tagsGet
+  /bulk:
+    post:
+      summary: Bulk import
+      tags:
+        - Bulk
+      responses:
+        '200':
+          content:
+            application/json: {}
+          description: bulk import was completed
+      operationId: post-bulk
+      description: Bulk import tasks and tags
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Task'
+        description: ''
 components:
   schemas:
     Task:
       properties:
         id:
           type: string
+          format: uuid
         content:
           type: string
         tags:
-          type: array
           items:
             type: string
+          type: array
         recordedAt:
           type: string
+          example: 2020-01-30 02:16:04.604938
+tags:
+  - name: Task
+    description: Pomodoro Daily Learning Task Related
+  - name: Bulk
+    description: Bulk Operations

@@ -24,7 +24,7 @@ public class TasksService {
         List<Task> taskList = new ArrayList<>();
         result.forEach(each -> {
             Task task = new Task();
-            task.id(each.id.toString())
+            task.id(each.id)
                     .content(each.content)
                     .recordedAt(each.recordedAt.toString())
                     .tags(each.tags);
